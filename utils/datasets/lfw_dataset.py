@@ -87,6 +87,7 @@ def lfw(stage, configs=None, tta=False, tta_size=48):
             [
                 #transforms.RandomResizedCrop(224),
                 #transforms.RandomHorizontalFlip(),
+                transforms.Resize(224),
                 transforms.ToTensor(),
                 #normalize,
             ]

@@ -33,7 +33,7 @@ def resattnet56(in_channels, num_classes, pretrained=True):
 
 def cbam_resnet50(in_channels, num_classes, pretrained=True):
     model = ptcv_get_model("cbam_resnet50", pretrained=True)
-    model.output = nn.Linear(2048, 7)
+    model.output = nn.Linear(2048, num_classes)
     return model
 
 

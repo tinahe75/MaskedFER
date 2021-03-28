@@ -9,6 +9,7 @@ import imgaug
 import torch
 import torch.multiprocessing as mp
 import numpy as np
+import argparse
 
 
 seed = 1234
@@ -87,4 +88,7 @@ def get_dataset(configs):
 
 
 if __name__ == "__main__":
-    main("./configs/lfw_config.json")
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument("--config", help="path to config file")
+    args = argparser.parse_args()
+    main(args.config)

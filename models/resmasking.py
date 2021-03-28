@@ -17,15 +17,15 @@ from .masking import masking
 
 
 class ResMasking(ResNet):
-    def __init__(self, weight_path):
+    def __init__(self, weight_path,num_classes=7):
         super(ResMasking, self).__init__(
             block=BasicBlock, layers=[3, 4, 6, 3], in_channels=3, num_classes=1000
         )
         # state_dict = torch.load('saved/checkpoints/resnet18_rot30_2019Nov05_17.44')['net']
-        # state_dict = load_state_dict_from_url(model_urls['resnet34'], progress=True)
-        # self.load_state_dict(state_dict)
+        state_dict = load_state_dict_from_url(model_urls['resnet34'], progress=True)
+        self.load_state_dict(state_dict)
 
-        self.fc = nn.Linear(512, 7)
+        self.fc = nn.Linear(512, num_classes)
 
         """
         # freeze all net
@@ -72,7 +72,7 @@ class ResMasking(ResNet):
 
 
 class ResMasking50(ResNet):
-    def __init__(self, weight_path):
+    def __init__(self, weight_path,num_classes=7):
         super(ResMasking50, self).__init__(
             block=Bottleneck, layers=[3, 4, 6, 3], in_channels=3, num_classes=1000
         )
@@ -80,7 +80,7 @@ class ResMasking50(ResNet):
         state_dict = load_state_dict_from_url(model_urls["resnet50"], progress=True)
         self.load_state_dict(state_dict)
 
-        self.fc = nn.Linear(2048, 7)
+        self.fc = nn.Linear(2048, num_classes)
 
         """
         # freeze all net
@@ -127,20 +127,20 @@ class ResMasking50(ResNet):
 
 
 def resmasking(in_channels, num_classes, weight_path=""):
-    return ResMasking(weight_path)
+    return ResMasking(weight_path,num_classes)
 
 
 def resmasking50_dropout1(in_channels, num_classes, weight_path=""):
-    model = ResMasking50(weight_path)
+    model = ResMasking50(weight_path,num_classes)
     model.fc = nn.Sequential(nn.Dropout(0.4), nn.Linear(2048, num_classes))
     return model
 
 
 def resmasking_dropout1(in_channels=3, num_classes=7, weight_path=""):
-    model = ResMasking(weight_path)
+    model = ResMasking(weight_path,num_classes)
     model.fc = nn.Sequential(
         nn.Dropout(0.4),
-        nn.Linear(512, 7)
+        nn.Linear(512, num_classes)
         # nn.Linear(512, num_classes)
     )
     return model
@@ -153,7 +153,7 @@ def resmasking_dropout2(in_channels, num_classes, weight_path=""):
         nn.Linear(512, 128),
         nn.ReLU(),
         nn.Dropout(p=0.5),
-        nn.Linear(128, 7),
+        nn.Linear(128, num_classes),
     )
     return model
 
@@ -168,7 +168,7 @@ def resmasking_dropout3(in_channels, num_classes, weight_path=""):
         nn.Linear(512, 128),
         nn.ReLU(True),
         nn.Dropout(),
-        nn.Linear(128, 7),
+        nn.Linear(128, num_classes),
     )
     return model
 
@@ -183,6 +183,6 @@ def resmasking_dropout4(in_channels, num_classes, weight_path=""):
         nn.Linear(128, 128),
         nn.ReLU(True),
         nn.Dropout(),
-        nn.Linear(128, 7),
+        nn.Linear(128, num_classes),
     )
     return model

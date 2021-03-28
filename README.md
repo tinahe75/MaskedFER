@@ -5,6 +5,23 @@
 [![style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/phamquiluan/residualmaskingnetwork)
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/challenges-in-representation-learning-a/facial-expression-recognition-on-fer2013)](https://paperswithcode.com/sota/facial-expression-recognition-on-fer2013?p=challenges-in-representation-learning-a)
 
+# Masked FER to-do:
+  * [x] add data loader code to work with LFW images
+  * [ ] train ResMasking on M-LFW -> running on colab
+  * [ ] ResMasking hyperparam tuning
+  * [x] train cbam_resnet50 on M-LFW -> tina's local gpu
+  * [ ] cbam_resnet50 hyperparam tuning
+  * [ ] train ResMasking on LFW, test on M-LFW
+  * [ ] train cbam_resnet50 on LFW , test on M-LFW
+  * [ ] collect + annotate real world masked faces (currently collected 20 real imgs per category)
+
+    
+If enough time:
+  * [ ] train ResMasking on LFW, finetune & test on M-LFW
+  * [ ] train cbam_resnet50 on LFW, finetune & test on M-LFW
+
+
+
 A [PyTorch](http://pytorch.org/) implementation of my thesis with the same name.
 
 
