@@ -7,13 +7,13 @@
 
 # Masked FER to-do:
   * [x] add data loader code to work with LFW images
-  * [ ] train ResMasking on M-LFW -> running on colab
+  * [x] train ResMasking on M-LFW, default hyperparams -> tina running on colab
   * [ ] ResMasking hyperparam tuning
-  * [x] train cbam_resnet50 on M-LFW -> tina's local gpu
+  * [x] train cbam_resnet50 on M-LFW, default hyperparams -> tina running on colab
   * [ ] cbam_resnet50 hyperparam tuning
   * [ ] train ResMasking on LFW, test on M-LFW
   * [ ] train cbam_resnet50 on LFW , test on M-LFW
-  * [ ] collect + annotate real world masked faces (currently collected 20 real imgs per category)
+  * [ ] collect + annotate real world masked faces (currently collected 45 real imgs per category)
 
     
 If enough time:
