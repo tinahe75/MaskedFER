@@ -690,8 +690,9 @@ class LFWTrainer(Trainer):
                 targets = targets.cuda(non_blocking=True)
 
                 outputs = self._model(images)
-                print(outputs.shape, outputs)
+                #print(outputs.shape, outputs)
                 acc = accuracy(outputs, targets)[0]
+                print(f"test image {i+1} acc: {acc.item()}")
                 test_acc += acc.item()
                 f.writelines("{}_{}\n".format(i, acc.item()))
 
