@@ -17,6 +17,6 @@
 	"plateau_patience": 2,
 	"steplr": 50,
 	"log_dir": "saved/logs",
-	"checkpoint_dir": "saved/checkpoints",
+	"checkpoint_dir": "/content/drive/MyDrive/MaskedFER/M-LFW-FER/checkpoints",
 	"model_name": "_n"
 }

@@ -609,7 +609,8 @@ class LFWTrainer(Trainer):
         self._current_epoch_num = 0
 
         # for checkpoints
-        self._checkpoint_dir = os.path.join(self._configs["cwd"], "saved/checkpoints")
+        # self._checkpoint_dir = os.path.join(self._configs["cwd"], "saved/checkpoints")
+        self._checkpoint_dir = self._configs["checkpoint_dir"]
         if not os.path.exists(self._checkpoint_dir):
             os.makedirs(self._checkpoint_dir, exist_ok=True)
 
@@ -884,5 +885,5 @@ class LFWTrainer(Trainer):
             "val_acc_list": self._val_acc_list,
             "test_acc": self._test_acc,
         }
-
+        print("saving weights to "+self._checkpoint_path)
         torch.save(state, self._checkpoint_path)
