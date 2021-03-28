@@ -5,6 +5,10 @@
 [![style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/phamquiluan/residualmaskingnetwork)
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/challenges-in-representation-learning-a/facial-expression-recognition-on-fer2013)](https://paperswithcode.com/sota/facial-expression-recognition-on-fer2013?p=challenges-in-representation-learning-a)
 
+# Google drive folder for data
+ https://drive.google.com/drive/folders/1We1nxkT2F1FdltiluVsQRyVwexUQhl4D?usp=sharing
+
+
 # Masked FER to-do:
   * [x] add data loader code to work with LFW images
   * [x] train ResMasking on M-LFW, default hyperparams -> tina running on colab
