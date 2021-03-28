@@ -1,8 +1,8 @@
 {
-	"data_path": "saved/data/fer2013",
-	"image_size": 224,
+	"data_path": "saved/data/M-LFW-FER",
+	"image_size": 250,
 	"in_channels": 3,
-	"num_classes": 7,
+	"num_classes": 3,
 	"arch": "cbam_resnet50",
 	"lr":  0.0001,
 	"weighted_loss": 0,
