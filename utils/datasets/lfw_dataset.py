@@ -7,7 +7,7 @@ from torchvision.transforms import transforms
 from torch.utils.data import Dataset
 from utils.augmenters.augment import seg
 import torchvision.datasets as datasets
-
+import torch
 
 #
 # EMOTION_DICT = {
@@ -73,8 +73,18 @@ import torchvision.datasets as datasets
 #         target = self._emotions.iloc[idx].idxmax()
 #         return image, target
 
+class AddGaussianNoise(object):
+    def __init__(self, mean=0., std=1.):
+        self.std = std
+        self.mean = mean
 
-def lfw(stage, configs=None, tta=False, tta_size=48):
+    def __call__(self, tensor):
+        return tensor + torch.randn(tensor.size()) * self.std + self.mean
+
+    def __repr__(self):
+        return self.__class__.__name__ + '(mean={0}, std={1})'.format(self.mean, self.std)
+
+def lfw(stage, configs=None, augment=False, tta=False, tta_size=48):
     normalize = transforms.Normalize(
         mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]
     )
@@ -93,8 +103,50 @@ def lfw(stage, configs=None, tta=False, tta_size=48):
             ]
         ),
     )
+    if augment:
+        dataset2 = datasets.ImageFolder(
+            folder_path,
+            transforms.Compose(
+                [
+                    transforms.Resize(224),
+                    transforms.RandomHorizontalFlip(),
+                    transforms.RandomRotation((1,20)),
+                    transforms.ColorJitter(),
+                    transforms.ToTensor(),
+                ]
+            ),
+    )
+        dataset3 = datasets.ImageFolder(
+            folder_path,
+            transforms.Compose(
+                [
+                    transforms.Resize(224),
+                    transforms.RandomHorizontalFlip(),
+                    transforms.RandomRotation((-20, -1)),
+                    transforms.ColorJitter(),
+                    transforms.ToTensor(),
+                ]
+            ),
+        )
 
-    return dataset
+        dataset4 = datasets.ImageFolder(
+            folder_path,
+            transforms.Compose(
+                [
+                    transforms.Resize(224),
+                    transforms.RandomHorizontalFlip(),
+                    transforms.RandomAffine(degrees=0,translate=(0.1,0.1)),
+                    transforms.ColorJitter(),
+
+                    transforms.ToTensor(),
+                    AddGaussianNoise(0., 0.05),
+
+                ]
+            ),
+        )
+        return torch.utils.data.ConcatDataset([dataset4,dataset2, dataset3, dataset])
+    else:
+        return dataset
 
 
 if __name__ == "__main__":
@@ -108,7 +160,8 @@ if __name__ == "__main__":
     # )
     import cv2
 
-    data = lfw("train", {"data_path":r"D:\tina\MaskedFER\saved\data\LFW-FER"})
+    #data = lfw("test", {"data_path":r"D:\tina\MaskedFER\saved\data\M-LFW-FER"})
+    data = lfw("train", {"data_path": r"D:\tina\MaskedFER\saved\data\M-LFW-FER"},augment=True)
     targets = []
     weights = []
     avg = len(data)/3
@@ -118,9 +171,10 @@ if __name__ == "__main__":
     for i in range(len(data)):
         image,target = data[i]
         cnt[target]+=1
+        print(image.shape)
         # image, target = data[i]
-        #cv2.imwrite(r"D:\tina\MaskedFER\debug\{}_lfw.png".format(i), cv2.cvtColor(255*np.transpose(image.numpy(),(1,2,0)), cv2.COLOR_RGB2BGR))
+        cv2.imwrite(r"D:\tina\MaskedFER\debug\{}_lfw.png".format(i), cv2.cvtColor(255*np.transpose(image.numpy(),(1,2,0)), cv2.COLOR_RGB2BGR))
         # if i == 200:
         #     break
 
-    print(avg/cnt)
+    print(avg/np.array(cnt))

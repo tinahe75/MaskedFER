@@ -26,7 +26,7 @@ import models
 from models import segmentation
 
 
-def main(config_path):
+def main(config_path, pretrain):
     """
     This is the main function to make the training up
 
@@ -40,7 +40,7 @@ def main(config_path):
     configs["cwd"] = os.getcwd()
 
     # load model and data_loader
-    model = get_model(configs)
+    model = get_model(configs, pretrain)
 
     train_set, val_set, test_set = get_dataset(configs)
 
@@ -50,7 +50,7 @@ def main(config_path):
     from trainers.tta_trainer import LFWTrainer
 
     # from trainers.centerloss_trainer import FER2013Trainer
-    trainer = LFWTrainer(model, train_set, val_set, test_set, configs)
+    trainer = LFWTrainer(model, train_set, val_set, test_set, configs, pretrain)
 
     if configs["distributed"] == 1:
         ngpus = torch.cuda.device_count()
@@ -59,7 +59,7 @@ def main(config_path):
         trainer.train()
 
 
-def get_model(configs):
+def get_model(configs,pretrain):
     """
     This function get raw models from models package
 
@@ -81,7 +81,7 @@ def get_dataset(configs):
     from utils.datasets.lfw_dataset import lfw
 
     # todo: add transform
-    train_set = lfw("train", configs)
+    train_set = lfw("train", configs,augment=True)
     val_set = lfw("val", configs)
     test_set = lfw("test", configs)
     return train_set, val_set, test_set
@@ -90,5 +90,6 @@ def get_dataset(configs):
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser()
     argparser.add_argument("--config", help="path to config file")
+    argparser.add_argument("--pretrain", type=int, help="if 1, use pretrained version of model",default=1)
     args = argparser.parse_args()
-    main(args.config)
+    main(args.config,args.pretrain)

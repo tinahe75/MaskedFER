@@ -471,7 +471,7 @@ class FER2013Trainer(Trainer):
 class LFWTrainer(Trainer):
     """for classification task"""
 
-    def __init__(self, model, train_set, val_set, test_set, configs):
+    def __init__(self, model, train_set, val_set, test_set, configs, pretrain):
         super().__init__()
         print("Start trainer..")
         print(configs)
@@ -495,6 +495,7 @@ class LFWTrainer(Trainer):
         self._model = model(
             in_channels=configs["in_channels"],
             num_classes=configs["num_classes"],
+            pretrained=pretrain
         )
 
         # self._model.fc = nn.Linear(512, 7)

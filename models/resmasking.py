@@ -17,13 +17,14 @@ from .masking import masking
 
 
 class ResMasking(ResNet):
-    def __init__(self, weight_path,num_classes=7):
+    def __init__(self, weight_path,num_classes=7,pretrained=True):
         super(ResMasking, self).__init__(
             block=BasicBlock, layers=[3, 4, 6, 3], in_channels=3, num_classes=1000
         )
         # state_dict = torch.load('saved/checkpoints/resnet18_rot30_2019Nov05_17.44')['net']
-        state_dict = load_state_dict_from_url(model_urls['resnet34'], progress=True)
-        self.load_state_dict(state_dict)
+        if pretrained:
+            state_dict = load_state_dict_from_url(model_urls['resnet34'], progress=True)
+            self.load_state_dict(state_dict)
 
         self.fc = nn.Linear(512, num_classes)
 
@@ -72,13 +73,14 @@ class ResMasking(ResNet):
 
 
 class ResMasking50(ResNet):
-    def __init__(self, weight_path,num_classes=7):
+    def __init__(self, weight_path,num_classes=7,pretrain=True):
         super(ResMasking50, self).__init__(
             block=Bottleneck, layers=[3, 4, 6, 3], in_channels=3, num_classes=1000
         )
         # state_dict = torch.load(weight_path)['net']
-        state_dict = load_state_dict_from_url(model_urls["resnet50"], progress=True)
-        self.load_state_dict(state_dict)
+        if pretrain:
+            state_dict = load_state_dict_from_url(model_urls["resnet50"], progress=True)
+            self.load_state_dict(state_dict)
 
         self.fc = nn.Linear(2048, num_classes)
 
@@ -136,8 +138,8 @@ def resmasking50_dropout1(in_channels, num_classes, weight_path=""):
     return model
 
 
-def resmasking_dropout1(in_channels=3, num_classes=7, weight_path=""):
-    model = ResMasking(weight_path,num_classes)
+def resmasking_dropout1(in_channels=3, num_classes=7, weight_path="",pretrained=True):
+    model = ResMasking(weight_path,num_classes,pretrained)
     model.fc = nn.Sequential(
         nn.Dropout(0.4),
         nn.Linear(512, num_classes)
