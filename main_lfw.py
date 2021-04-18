@@ -90,6 +90,6 @@ def get_dataset(configs):
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser()
     argparser.add_argument("--config", help="path to config file")
-    argparser.add_argument("--pretrain", type=int, help="if 1, use pretrained version of model",default=1)
+    argparser.add_argument("--pretrain", type=bool, help="if True, use pretrained version of model. Default=True",default=True)
     args = argparser.parse_args()
     main(args.config,args.pretrain)
