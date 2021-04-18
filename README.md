@@ -15,8 +15,8 @@
   * [ ] ResMasking hyperparam tuning
   * [x] train cbam_resnet50 on M-LFW, default hyperparams -> tina running on colab
   * [ ] cbam_resnet50 hyperparam tuning
-  * [ ] train ResMasking on LFW, test on M-LFW
-  * [ ] train cbam_resnet50 on LFW , test on M-LFW
+  * [ ] train ResMasking on LFW, test on real world masked faces -> Svet plz run this one in the notebook
+  * [ ] train cbam_resnet50 on LFW , test on real world masked faces -> Svet plz run this one in the notebook
   * [ ] collect + annotate real world masked faces (currently collected 45 real imgs per category)
 
     
