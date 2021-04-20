@@ -91,7 +91,7 @@ L. Pham, H. Vu, T. A. Tran, "Facial Expression Recognition Using Residual Maskin
 }
 ```
 
-LFW-FER or M-LFW-FER dataset provided by Yang et al.:
+LFW-FER and M-LFW-FER dataset provided by Yang et al.:
 
 ```BibTeX
 @inproceedings{LFW-emotion,
