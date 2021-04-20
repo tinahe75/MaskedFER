@@ -17,16 +17,21 @@ from .masking import masking
 
 
 class ResMasking(ResNet):
-    def __init__(self, weight_path,num_classes=7,pretrained=True):
+    def __init__(self, weight_path,num_classes=7,pretrained=1):
         super(ResMasking, self).__init__(
             block=BasicBlock, layers=[3, 4, 6, 3], in_channels=3, num_classes=1000
         )
         # state_dict = torch.load('saved/checkpoints/resnet18_rot30_2019Nov05_17.44')['net']
-        if pretrained:
+        if pretrained==1:
             state_dict = load_state_dict_from_url(model_urls['resnet34'], progress=True)
             self.load_state_dict(state_dict)
 
-        self.fc = nn.Linear(512, num_classes)
+        if pretrained==2:
+            self.fc = nn.Sequential(
+                nn.Dropout(0.4),
+                nn.Linear(512, num_classes))
+        else:
+            self.fc = nn.Linear(512, num_classes)
 
         """
         # freeze all net
@@ -138,8 +143,14 @@ def resmasking50_dropout1(in_channels, num_classes, weight_path=""):
     return model
 
 
-def resmasking_dropout1(in_channels=3, num_classes=7, weight_path="",pretrained=True):
+def resmasking_dropout1(in_channels=3, num_classes=7, weight_path="", pretrained=1):
     model = ResMasking(weight_path,num_classes,pretrained)
+    if pretrained==2:
+        state_dict = torch.load('saved/checkpoints/resmasking_dropout1__n_2021Apr18_22.13')['net']
+        model.load_state_dict(state_dict)
+        # for m in model.parameters():
+        #     m.requires_grad = False
+
     model.fc = nn.Sequential(
         nn.Dropout(0.4),
         nn.Linear(512, num_classes)

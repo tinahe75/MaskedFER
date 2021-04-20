@@ -40,7 +40,7 @@ def main(config_path, pretrain):
     configs["cwd"] = os.getcwd()
 
     # load model and data_loader
-    model = get_model(configs, pretrain)
+    model = get_model(configs)
 
     train_set, val_set, test_set = get_dataset(configs)
 
@@ -59,7 +59,7 @@ def main(config_path, pretrain):
         trainer.train()
 
 
-def get_model(configs,pretrain):
+def get_model(configs):
     """
     This function get raw models from models package
 
@@ -90,6 +90,8 @@ def get_dataset(configs):
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser()
     argparser.add_argument("--config", help="path to config file")
-    argparser.add_argument("--pretrain", type=bool, help="if True, use pretrained version of model. Default=True",default=True)
+    argparser.add_argument("--pretrain", type=int, help="if 0, train from scratch\n"
+                                                        "if 1, use pretrained version of pytorch model. Default=1\n"
+                                                        "if 2, load a pre-trained model from path",default=1)
     args = argparser.parse_args()
     main(args.config,args.pretrain)
