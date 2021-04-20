@@ -35,11 +35,12 @@ def cbam_resnet50(in_channels, num_classes, pretrained=1):
     if pretrained==1:
         model = ptcv_get_model("cbam_resnet50", pretrained=True)
         model.output = nn.Linear(2048, num_classes)
-        print('pretrained imagenet')
+        print('using pretrained imagenet weights')
     else:
         model = ptcv_get_model("cbam_resnet50", pretrained=False)
         model.output = nn.Linear(2048, num_classes)
         if pretrained==2:
+            print('using pretrained lfw weights')
             state_dict = torch.load('saved/checkpoints/cbam_resnet50__n_2021Apr20_00.24')['net']
             model.load_state_dict(state_dict)
 

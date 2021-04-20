@@ -25,6 +25,7 @@ class ResMasking(ResNet):
         if pretrained==1:
             state_dict = load_state_dict_from_url(model_urls['resnet34'], progress=True)
             self.load_state_dict(state_dict)
+            print('using pretrained imagenet weights')
 
         if pretrained==2:
             self.fc = nn.Sequential(
@@ -146,6 +147,7 @@ def resmasking50_dropout1(in_channels, num_classes, weight_path=""):
 def resmasking_dropout1(in_channels=3, num_classes=7, weight_path="", pretrained=1):
     model = ResMasking(weight_path,num_classes,pretrained)
     if pretrained==2:
+        print('using pretrained lfw weights')
         state_dict = torch.load('saved/checkpoints/resmasking_dropout1__n_2021Apr18_22.13')['net']
         model.load_state_dict(state_dict)
         # for m in model.parameters():

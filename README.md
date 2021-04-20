@@ -1,284 +1,80 @@
-# Facial Expression Recognition using Residual Masking Network, in PyTorch
+# Facial Expression Recognition for Masked Faces
 
-[![pypi package](https://img.shields.io/badge/version-v1.0.1-blue)](https://pypi.org/project/rmn)
-[![circleci](https://circleci.com/gh/phamquiluan/ResidualMaskingNetwork.svg?style=shield&circle-token=3ca7f15b6bd362b625bec536d57c45fe5ef6f2c9)](https://app.circleci.com/pipelines/github/phamquiluan/ResidualMaskingNetwork)
-[![style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/phamquiluan/residualmaskingnetwork)
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/challenges-in-representation-learning-a/facial-expression-recognition-on-fer2013)](https://paperswithcode.com/sota/facial-expression-recognition-on-fer2013?p=challenges-in-representation-learning-a)
+This project was developed by adapting the code from [ResidualMaskingNetwork](https://github.com/phamquiluan/ResidualMaskingNetwork).
+The training and validation data was generously provided by Bo Yang and Jianming Wu via [LFW-emotion-dataset](https://github.com/KDDI-AI-Center/LFW-emotion-dataset).
 
-# Colab notebooks
-## training on LFW
- https://colab.research.google.com/drive/1C3C4tekMFi4PYQacWMLUckOg3iTT45C_?usp=sharing
+( insert project description here)
 
-# Masked FER to-do:
+
+## Required libraries
+* pytorch == 1.7.0
+* torchvision == 0.8.0
+* torchtext == 0.8.0
+* pytorchcv
+* imgaug==0.3.0
+* For visualization: matploblib, seaborn
+
+## Colab notebooks
+Running these notebooks requires downloading the dataset to your Google Drive. The notebooks will mount the drive 
+and directly read/write to it. Checkpoints are saved to your Drive folder too. During training, 
+the best training and validation accuracies are displayed in the notebook.
+### Training on LFW
+* https://colab.research.google.com/drive/1C3C4tekMFi4PYQacWMLUckOg3iTT45C_?usp=sharing
+### Training on M-LFW
+* https://colab.research.google.com/drive/1PQz4r6fW0rCTKFXCUz5qJ08T8eIcSmq1?usp=sharing
+
+## Saved checkpoints
+* [cbam_resnet50, trained on M-LFW](https://drive.google.com/file/d/1-28bhnVTG7H-U1iMWSujU2SAGKPeXi4C/view?usp=sharing): cbam_resnet50__n_2021Apr18_23.46
+* [resmaskingnet, trained on M-LFW](https://drive.google.com/file/d/1T-_yyCiyxHdmTuX285ifSGLdMB2UkVXE/view?usp=sharing): resmasking_dropout1__n_2021Apr18_21.31
+* [cbam_resnet50, trained on LFW](https://drive.google.com/file/d/1zWPr7TnvP_0XzL3z48XXtgPrT_VOfm7W/view?usp=sharing): cbam_resnet50__n_2021Apr20_00.24
+* [resmaskingnet, trained on LFW](https://drive.google.com/file/d/1M1GSLfuuwLmn8EaU9VeX3PXpQbOdn76C/view?usp=sharing): resmasking_dropout1__n_2021Apr18_22.13
+
+## Project tasks:
   * [x] add data loader code to work with LFW images
-  * [x] train ResMasking on M-LFW, default hyperparams -> tina running on colab
-  * [ ] ResMasking hyperparam tuning
-  * [x] train cbam_resnet50 on M-LFW, default hyperparams -> tina running on colab
-  * [ ] cbam_resnet50 hyperparam tuning
-  * [ ] train ResMasking on LFW, test on real world masked faces -> Svet plz run this one in the notebook
-  * [ ] train cbam_resnet50 on LFW , test on real world masked faces -> Svet plz run this one in the notebook
-  * [ ] collect + annotate real world masked faces (currently collected 45 real imgs per category)
-
-    
-If enough time:
-  * [ ] train ResMasking on LFW, finetune & test on M-LFW
-  * [ ] train cbam_resnet50 on LFW, finetune & test on M-LFW
-
-
-
-A [PyTorch](http://pytorch.org/) implementation of my thesis with the same name.
-
-
-<p align="center">
-<img width=700 src= "https://user-images.githubusercontent.com/24642166/104806861-14b29880-580d-11eb-814b-a074847e35fe.png"/>
-</p>
-
-# Live Demo:
-
-## Approach 1:
-1. Install from pip
-```bash
-pip install rmn
-```
-2. Run video demo by the following Python scripts
-```python
-from rmn import video_demo
-
-video_demo()
-```
-
-## Approach 2:
-1. clone the repo and install package via pip
-```bash
-git clone git@github.com:phamquiluan/ResidualMaskingNetwork.git 
-
-cd ResidualMaskingNetwork
-pip install -e .
-```
-
-2. call ```video_demo``` in `rmn` package
-```python
-from rmn import video_demo
-video_demo()
-```
-
-
-## Approach 3:
-- Model file: [download](https://drive.google.com/open?id=1_6CzlKRS9ksxlo0TjqIGXMzQE4I83tE0) (this checkpoint is trained on VEMO dataset, locate it at ```./saved/checkpoints/``` directory)
-- Download 2 files: [prototxt](https://drive.google.com/open?id=1ANVPx3JM4EcJVZOstV_kEO1Jcv74mBu5), and [res10_300x300_ssd](https://drive.google.com/open?id=1Iy_3I_mWGhBA63W0IK8tRrUuvr-WrGQ2) for face detection OpenCV. Locate at current directory or checking file path with ```ssd_infer.py``` file.
-
-```Shell
-python ssd_infer.py
-```
-
-<p align="center">
-<img width=500 src= "https://user-images.githubusercontent.com/24642166/72135777-da244d80-33b9-11ea-90ee-706b25c0a5a9.png"/>
-</p>
-
-
-
-
-### Table of Contents
-- <a href='#recent_update'>Recent Update</a>
-- <a href='#benchmarking_fer2013'>Benchmarking on FER2013</a>
-- <a href='#benchmarking_imagenet'>Benchmarking on ImageNet</a>
-- <a href='#install'>Installation</a>
-- <a href='#datasets'>Download datasets</a>
-- <a href='#train_fer'>Training on FER2013</a>
-- <a href='#train_imagenet'>Training on ImageNet</a>
-- <a href='#eval'>Evaluation results</a>
-- <a href='#docs'>Download dissertation and slide</a>
-
-&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
-
-<p id="recent_update"></p>
-
-
-## Recent Update
- - [27/02/2021] Add paper
- - [14/01/2021] Packaging Project and publish `rmn` on Pypi
- - [27/02/2020] Update Tensorboard visualizations and Overleaf source
- - [22/02/2020] Test-time augmentation implementation.
- - [21/02/2020] Imagenet training code and trained weights released.
- - [21/02/2020] Imagenet evaluation results released.
- - [10/01/2020] Checking demo stuff and training procedure works on another machine
- - [09/01/2020] First time upload
-
-<p id="benchmarking_fer2013"></p>
-
-
-## Benchmarking on FER2013
-
-We benchmark our code thoroughly on two datasets: FER2013 and VEMO. Below are the results and trained weights:
-
-
-Model | Accuracy |
----------|--------|
-[VGG19](https://drive.google.com/open?id=1FPkwhmel0AiGK3UtYiWCHPi5CYkF7BRc) | 70.80
-[EfficientNet\_b2b](https://drive.google.com/open?id=1pEyupTGQPoX1gj0NoJQUHnK5-mxB8NcS) | 70.80
-[Googlenet](https://drive.google.com/open?id=1LvxAxDmnTuXgYoqBj41qTdCRCSzaWIJr) | 71.97
-[Resnet34](https://drive.google.com/open?id=1iuTkqApioWe_IBPQ7gQHticrVlPA-xz_) | 72.42
-[Inception\_v3](https://drive.google.com/open?id=17mapZKWYMdxGTrbrAbRpfgniT5onmQXO) | 72.72
-[Bam\_Resnet50](https://drive.google.com/open?id=1K_gyarekwIxQMA_fEPJMApgqo3mYaM0H) | 73.14
-[Densenet121](https://drive.google.com/open?id=1f8wUtQj-UatrZtCnkJFcB--X2eJS1m_N) | 73.16
-[Resnet152](https://drive.google.com/open?id=1LBaHaVtu8uKiNsoTN7wl5Pg5ywh-QxRW) | 73.22
-[Cbam\_Resnet50](https://drive.google.com/open?id=1i9zk8sGXiixkQGTA1txBxSuew6z_c86T) | 73.39
-[ResMaskingNet](https://drive.google.com/open?id=1_ASpv0QNxknMFI75gwuVWi8FeeuMoGYy) | 74.14
-[ResMaskingNet + 6](https://drive.google.com/open?id=1y28VHzJcgBpW0Qn_K0XVVd-hxG4feIHG) | 76.82
-
-
-
-Results in VEMO dataset could be found in my thesis or slide (attached below)
-
-<p id="benchmarking_imagenet"></p>
-
- 
-## Benchmarking on ImageNet 
-
-We also benchmark our model on ImageNet dataset.
-
-
-Model | Top-1 Accuracy | Top-5 Accuracy |
----------|--------|--------|
-[Resnet34](https://drive.google.com/open?id=16lErBAk7K3WswKP0wyE9S0dNrr7AF6wd) | 72.59 | 90.92
-[CBAM Resnet34](https://drive.google.com/open?id=16lErBAk7K3WswKP0wyE9S0dNrr7AF6wd) | 73.77 | 91.72
-[ResidualMaskingNetwork](https://drive.google.com/open?id=1myjp4_XL8mNJlAbz0TFjYKUc7B0N64eb) | 74.16 | 91.91
-
-
-<p id="install"></p>
- 
-
-## Installation
-- Install [PyTorch](http://pytorch.org/) by selecting your environment on the website and running the appropriate command.
-- Clone this repository and install package [prerequisites](#prerequisites) below.
-- Then download the dataset by following the [instructions](#datasets) below.
-
-
-### prerequisites
-
-* Python 3.6+
-* PyTorch 1.3+
-* Torchvision 0.4.0+ 
-* [requirements.txt](requirements.txt)
-
-
-<p id="datasets"></p>
-
-
-## Datasets
-
-- [FER2013 Dataset](https://drive.google.com/open?id=18ovcnZBsPvwXXFVAqczACe9zciO_1q6J) (locate it in ```saved/data/fer2013``` like ```saved/data/fer2013/train.csv```)
-- [ImageNet 1K Dataset](http://image-net.org/download-images) (ensure it can be loaded by torchvision.datasets.Imagenet)
-
-
-
-<p id="train_fer"></p>
-
-
-## Training on FER2013
-
-- To train network, you need to specify model name and other hyperparameters in config file (located at configs/\*) then ensure it is loaded in main file, then run training procedure by simply run main file, for example:
-
-```Shell
-python main_fer.py  # Example for fer2013_config.json file
-```
-
-- The best checkpoints will chosen at term of best validation accuracy, located at ```saved/checkpoints```
-- The TensorBoard training logs are located at ```saved/logs```, to open it, use ```tensorboard --logdir saved/logs/```
-
-
-<p align="center">
-<img width=900 src= "https://user-images.githubusercontent.com/24642166/75408653-fddf2b00-5948-11ea-981f-3d95478d5708.png"/>
-</p>
-
-- By default, it will train `alexnet` model, you can switch to another model by edit `configs/fer2013\_config.json` file (to `resnet18` or `cbam\_resnet50` or my network `resmasking\_dropout1`.
-
-
-<p id="train_imagenet"></p>
-
-
-## Training on Imagenet dataset
-
-To perform training resnet34 on 4 V100 GPUs on a single machine:
-
-```Shell
-python ./main_imagenet.py -a resnet34 --dist-url 'tcp://127.0.0.1:12345' --dist-backend 'nccl' --multiprocessing-distributed --world-size 1 --rank 0 
-```
-
-<p id="eval"></p>
+  * [x] train ResMasking on M-LFW, default hyperparams 
+  * [x] ResMasking hyperparam tuning, try different transfer learning configurations
+  * [x] train cbam_resnet50 on M-LFW, default hyperparams 
+  * [x] cbam_resnet50 hyperparam tuning, try different transfer learning configurations
+  * [x] train ResMasking on LFW, test on real world masked faces 
+  * [x] train cbam_resnet50 on LFW , test on real world masked faces 
+  * [x] collect + annotate real world masked faces 
 
 
 ## Evaluation
 
-For student, who takes care of font family of confusion matrix and would like to write things in LaTeX, below is an example for generating a striking confusion matrix. 
+To generate confusion matrices and samples of misclassified images, run gen_confusion_matrix.py.
+The --type parameter specificies the data type (train, val, test). This allows generating confusion matrices for 
+both validation and test data.
 
-(Read [this article](https://matplotlib.org/3.1.1/tutorials/text/usetex.html) for more information, there will be some bugs if you blindly run the code without reading).
+If not saving sample images, set --save_samples to 0. The following code assumes that the checkpoints 
+are already saved to /saved/checkpoints. To download them, follow the links provided above.
+
+Saving sample images requires running the command twice, once for cbam_resnet50 and once fo resmaskingnet.
+Only images misclassified by both models are saved. Run the following to produce samples and confusion matrices 
+for both architectures, trained on LFW and M-LFW.
+
+*Note: this script contains some hardcoded checkpoint names when saving samples. Make sure to modify if needed.*
+
 
 ```Shell
-python cm_cbam.py 
+
+python gen_confusion_matrix.py --config configs/m_lfw_cbam_resnet50_config_colab.json --type test --model cbam_resnet50 --checkpoint cbam_resnet50__n_2021Apr18_23.46 --save_samples 0 
+
+python gen_confusion_matrix.py --config configs/m_lfw_res_masking_config_colab.json --type test --model resmasking_dropout1 --checkpoint resmasking_dropout1__n_2021Apr18_21.31 --save_samples 1
+
+
+python gen_confusion_matrix.py --config configs/lfw_cbam_resnet50_config_colab.json --type test --model cbam_resnet50 --checkpoint cbam_resnet50__n_2021Apr20_00.24 --save_samples 0 
+
+python gen_confusion_matrix.py --config configs/lfw_res_masking_config_colab.json --type test --model resmasking_dropout1 --checkpoint resmasking_dropout1__n_2021Apr18_22.13 --save_samples 1
+
 ```
 
-<p align="center">
-<img width=600 src= "https://user-images.githubusercontent.com/24642166/104806916-81c62e00-580d-11eb-8dcd-c5759e5d48ae.png"/>
-</p>
 
 
-## Ensemble method
-
-I used no-weighted sum avarage ensemble method to fusing 7 different models together, to reproduce results, you need to do some steps:
-
-1. Download all needed trained weights and located on ```./saved/checkpoints/``` directory.  Link to download can be found on Benchmarking section.
-2. Edit file ```gen_results``` and run it to generate result offline for **each** model.
-3. Run ```gen_ensemble.py``` file to generate accuracy for example methods.
-
-
-
-<p id="docs"></p>
-
-
-## Dissertation and Slide
-- [Dissertation PDF (in Vietnamese)](https://drive.google.com/open?id=1HxqvQSZRf-3ashGtZ5o9OABdhmdjS64a)
-- [Dissertation Overleaf Source](https://www.overleaf.com/read/qdyhnzjmbscd)
-- [Presentation slide PDF (in English) with full appendix](https://drive.google.com/open?id=19zweCDX8Vz4jgwJ6cBWr5x_iQPvahsQg)
-- [Presentation slide Overleaf Source](https://www.overleaf.com/read/vxdhjvhvgwdn)
-- [Paper](docs/paper.pdf)
-
-
-## TODO
-We have accumulated the following to-do list, which we hope to complete in the near future
-- Still to come:
-  * [x] Upload all models and training code.
-  * [x] Test time augmentation.
-  * [x] GPU-Parallel.
-  * [x] Pretrained model.
-  * [x] Demo and inference code.
-  * [x] Imagenet trained and pretrained weights.
-  * [ ] GradCAM visualization and Pooling method for visualize activations.
-  * [ ] Centerloss Visualizations.
-  
-
-<p id="author"></p>
-
-
-## Authors
-
-* [**Luan Pham**](https://github.com/phamquiluan)
-* [**Tuan Anh Tran**](https://github.com/phamquiluan)
-
-***Note:*** Unfortunately, I am currently join a full-time job and research on another topic, so I'll do my best to keep things up to date, but no guarantees.  That being said, thanks to everyone for your continued help and feedback as it is really appreciated. I will try to address everything as soon as possible.
-
-
-<p id="references"></p>
 
 
 ## References
-- Same as in dissertation.
 
-
-## Citation
 
 L. Pham, H. Vu, T. A. Tran, "Facial Expression Recognition Using Residual Masking Network", IEEE 25th International Conference on Pattern Recognition, 2020, 4513-4519. Milan -Italia.
 
@@ -293,3 +89,30 @@ L. Pham, H. Vu, T. A. Tran, "Facial Expression Recognition Using Residual Maskin
 }
 ```
 
+LFW-FER or M-LFW-FER dataset provided by Yang et al.:
+
+```BibTeX
+@inproceedings{LFW-emotion,
+  author = {Yang, Bo and Wu, Jianming and Hattori, Gen},
+  title = {Facial Expression Recognition with the advent of human beings all behind face masks},
+  year = {2020},
+  publisher = {Association for Computing Machinery},
+  address = {Essen, Germany},
+  series = {MUM2020}
+}
+```
+Their paper on M-LFW: https://dl.acm.org/doi/10.1145/3428361.3432075
+
+Original LFW database:
+
+
+```BibTeX
+@TechReport{LFWTech,
+  author = {Gary B. Huang and Manu Ramesh and Tamara Berg and Erik Learned-Miller},
+  title = {Labeled Faces in the Wild: A Database for Studying Face Recognition in Unconstrained Environments},
+  institution = {University of Massachusetts, Amherst},
+  year = {2007},
+  number = {07-49},
+  month = {October}
+}
+```
