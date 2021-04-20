@@ -34,8 +34,11 @@ def resattnet56(in_channels, num_classes, pretrained=True):
 def cbam_resnet50(in_channels, num_classes, pretrained=1):
     if pretrained==1:
         model = ptcv_get_model("cbam_resnet50", pretrained=True)
+        model.output = nn.Linear(2048, num_classes)
+        print('pretrained imagenet')
     else:
         model = ptcv_get_model("cbam_resnet50", pretrained=False)
+        model.output = nn.Linear(2048, num_classes)
         if pretrained==2:
             state_dict = torch.load('saved/checkpoints/cbam_resnet50__n_2021Apr20_00.24')['net']
             model.load_state_dict(state_dict)
@@ -44,7 +47,7 @@ def cbam_resnet50(in_channels, num_classes, pretrained=1):
     # for name,param in model.named_parameters():
         # if "stage4" not in name:
         #     param.requires_grad = False
-    model.output = nn.Linear(2048, num_classes)
+    # model.output = nn.Linear(2048, num_classes)
     # model.output = nn.Sequential(nn.Dropout(p=0.5, inplace=False), nn.Linear(2048, num_classes))
 
     return model
