@@ -3,7 +3,7 @@
 This project was developed by adapting the code from [ResidualMaskingNetwork](https://github.com/phamquiluan/ResidualMaskingNetwork).
 The training and validation data was generously provided by Bo Yang and Jianming Wu via [LFW-emotion-dataset](https://github.com/KDDI-AI-Center/LFW-emotion-dataset).
 
-( insert project description here)
+Facial expression recognition (FER) in the wild is challenging, hence there is ongoing work to develop models that are robust to various environmental conditions. One challenge for FER is the partial occlusion of faces. Given the COVID-19 pandemic, mask-wearing in public spaces has become the norm, which makes FER for masked faces a new and relevant problem. The KDDI’s research team has released a new dataset (M-LFW) containing synthetically masked faces. This dataset has only been evaluated on VGG19 and MobileNet by Yang et al. We evaluate this dataset with two other architectures, ResMaskingNet and Cbam\_Resnet50, in order to further understand how real and synthetic face masks affect FER. Both architectures outperform the models reported by Yang et al. However, there remains a significant performance gap between synthetic and real masked faces. 
 
 
 ## Required libraries
