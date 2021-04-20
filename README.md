@@ -12,7 +12,7 @@ The training and validation data was generously provided by Bo Yang and Jianming
 * torchtext == 0.8.0
 * pytorchcv
 * imgaug==0.3.0
-* For visualization: matploblib, seaborn
+* For visualization: matploblib, seaborn, opencv
 
 ## Colab notebooks
 Running these notebooks requires downloading the dataset to your Google Drive. The notebooks will mount the drive 
@@ -46,11 +46,13 @@ To generate confusion matrices and samples of misclassified images, run gen_conf
 The --type parameter specificies the data type (train, val, test). This allows generating confusion matrices for 
 both validation and test data.
 
-If not saving sample images, set --save_samples to 0. The following code assumes that the checkpoints 
-are already saved to /saved/checkpoints. To download them, follow the links provided above.
+If not saving sample images, do not use --save_samples. The following code assumes that the checkpoints 
+are already saved to LFW-FER/saved/checkpoints and M-LFW-FER/saved/checkpoints. To download them, follow the links provided above.
 
 Saving sample images requires running the command twice, once for cbam_resnet50 and once fo resmaskingnet.
-Only images misclassified by both models are saved. Run the following to produce samples and confusion matrices 
+Only images misclassified by both models are saved. 
+
+Run the following via Colab to produce samples and confusion matrices 
 for both architectures, trained on LFW and M-LFW.
 
 *Note: this script contains some hardcoded checkpoint names when saving samples. Make sure to modify if needed.*

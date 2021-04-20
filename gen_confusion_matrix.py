@@ -65,7 +65,7 @@ def main():
     # if os.path.exists("./saved/results/{}.npy".format(checkpoint_path)):
     #     continue
     if args.save_samples:
-        if "m_lfw_" in checkpoint_path:
+        if "m_lfw_" in checkpoint_path or "M-LFW-FER" in configs['checkpoint_dir']:
             cbam = np.load(r"./saved\results\cbam_resnet50__n_2021Apr18_23.46.npy")
         else:
             cbam = np.load(r"./saved\results\cbam_resnet50__n_2021Apr20_00.24.npy")
@@ -103,9 +103,11 @@ def main():
             if targets == pred_class.numpy()[0]:
                 corr += 1
             elif args.save_samples and pred_class.numpy()[0]==cbam[idx]:
-                cv2.imwrite(f"./debug/target_{targets}pred_{cbam[idx]}_{idx}.png", cv2.cvtColor(255 * np.transpose(images_copy.numpy(), (1, 2, 0)), cv2.COLOR_RGB2BGR))
+                cv2.imwrite(f"./debug/target_{targets}_pred_{cbam[idx]}_{idx}.png", cv2.cvtColor(255 * np.transpose(images_copy.numpy(), (1, 2, 0)), cv2.COLOR_RGB2BGR))
 
     np.save("./saved/results/{}.npy".format(checkpoint_path), pred)
+    if args.save_samples:
+        print("Image samples are saved to ./debug !")
 
     sns.set_style('whitegrid')
     emo_labels = ["negative", "neutral", "positive"]
@@ -120,7 +122,7 @@ def main():
     sns.set(font_scale=1.2)
     ax = sns.heatmap(cf_matrix, annot=True, square=True, annot_kws={"size": 18})
 
-    if "m_lfw_" in checkpoint_path:
+    if "m_lfw_" in checkpoint_path or "M-LFW-FER" in configs['checkpoint_dir']:
         dataname = "M-LFW"
     else:
         dataname = "LFW"
@@ -137,6 +139,7 @@ def main():
     # ax.set_xticks(['negative', 'neutral', 'positive'])
     plt.tight_layout()
     plt.savefig(f"cm_{model_name}_{dataname}.png")
+    print(f"Confusion matrix is saved to ./cm_{model_name}_{dataname}.png")
     plt.show()
 
 
